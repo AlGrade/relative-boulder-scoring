@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: 'postgres:18'
+    container_name: rbs-postgres
+    environment:
+      POSTGRES_DB: boulderscoring
+      POSTGRES_USER: boulderscoring
+      POSTGRES_PASSWORD: boulderscoring
+    ports:
+      - '5432:5432'
+    volumes:
+      # Postgres 18+ erwartet den Mount auf /var/lib/postgresql (nicht .../data),
+      # damit spaetere pg_upgrade-Schritte ueber Major-Versionen hinweg funktionieren.
+      - rbs-postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U boulderscoring -d boulderscoring']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  rbs-postgres-data:

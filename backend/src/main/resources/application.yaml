@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: relative-boulder-scoring
+
+  # Spring Boot startet den Postgres-Container aus dem Repo-Root automatisch,
+  # sobald die App im Dev-Modus laeuft, und leitet die Datasource darauf um.
+  docker:
+    compose:
+      enabled: true
+      file: ../compose.yaml
+      lifecycle-management: start_only
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Schema gehoert Flyway - Hibernate validiert nur dagegen.
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc.time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    fail-on-missing-locations: false
+
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
