@@ -13,16 +13,13 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      # Schema gehoert Flyway - Hibernate validiert nur dagegen.
-      ddl-auto: validate
+      # Dev-Setup: Hibernate zieht das Schema aus den Entities nach.
+      # Sobald das Datenmodell steht, auf validate umstellen und
+      # Schema-Aenderungen ueber ein Migrationstool fahren.
+      ddl-auto: update
     properties:
       hibernate:
         jdbc.time_zone: UTC
-
-  flyway:
-    enabled: true
-    locations: classpath:db/migration
-    fail-on-missing-locations: false
 
   threads:
     virtual:

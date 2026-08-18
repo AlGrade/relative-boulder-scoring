@@ -12,7 +12,7 @@ und echter Datenbank.
 |------------|--------------------------------------------------|
 | Frontend   | Angular 22 (standalone, zoneless, Signals, SCSS) |
 | Backend    | Spring Boot 4.1 auf Java 25 (LTS), Maven         |
-| Persistenz | Spring Data JPA / Hibernate, Flyway-Migrationen  |
+| Persistenz | Spring Data JPA / Hibernate                      |
 | Datenbank  | PostgreSQL 18 (Docker)                           |
 | Tests      | JUnit 5 + Testcontainers, Vitest                 |
 
@@ -72,9 +72,9 @@ cd frontend && npm test       # Vitest
 
 ## Konventionen
 
-- **Schema-Änderungen ausschließlich über Flyway** in
-  `backend/src/main/resources/db/migration` (`V<n>__beschreibung.sql`).
-  Hibernate steht auf `ddl-auto: validate` und erzeugt selbst nichts.
+- Das Schema wird im Dev-Betrieb von Hibernate aus den Entities abgeleitet
+  (`ddl-auto: update`). Sobald das Datenmodell steht, auf `validate` wechseln
+  und Migrationen über ein Tool wie Flyway oder Liquibase fahren.
 - Zeiten werden in UTC persistiert.
 - `open-in-view` ist aus: Entities werden im Service-Layer vollständig geladen,
   Lazy-Loading im Controller schlägt bewusst fehl.
