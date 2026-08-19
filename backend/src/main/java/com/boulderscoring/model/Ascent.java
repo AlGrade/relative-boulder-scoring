@@ -1,7 +1,4 @@
-package com.boulderscoring.ascent;
-
-import com.boulderscoring.boulder.Boulder;
-import com.boulderscoring.competitor.Competitor;
+package com.boulderscoring.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,7 +42,7 @@ public class Ascent {
 		// for Hibernate
 	}
 
-	Ascent(Competitor competitor, Boulder boulder) {
+	public Ascent(Competitor competitor, Boulder boulder) {
 		this.competitor = competitor;
 		this.boulder = boulder;
 	}

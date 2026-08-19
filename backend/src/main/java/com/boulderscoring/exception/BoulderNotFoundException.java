@@ -1,4 +1,4 @@
-package com.boulderscoring.boulder;
+package com.boulderscoring.exception;
 
 public class BoulderNotFoundException extends RuntimeException {
 

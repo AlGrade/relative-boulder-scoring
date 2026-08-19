@@ -1,6 +1,9 @@
-package com.boulderscoring.boulder;
+package com.boulderscoring.controller;
 
 import java.util.List;
+
+import com.boulderscoring.dto.BoulderResponse;
+import com.boulderscoring.repository.BoulderRepository;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +22,5 @@ class BoulderController {
 	@GetMapping
 	List<BoulderResponse> all() {
 		return boulders.findAllByOrderByNumberAsc().stream().map(BoulderResponse::of).toList();
-	}
-}
-
-record BoulderResponse(Long id, int number) {
-
-	static BoulderResponse of(Boulder boulder) {
-		return new BoulderResponse(boulder.getId(), boulder.getNumber());
 	}
 }

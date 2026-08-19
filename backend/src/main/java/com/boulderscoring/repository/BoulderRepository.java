@@ -1,7 +1,9 @@
-package com.boulderscoring.boulder;
+package com.boulderscoring.repository;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.boulderscoring.model.Boulder;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

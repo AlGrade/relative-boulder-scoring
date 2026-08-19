@@ -1,4 +1,4 @@
-package com.boulderscoring.boulder;
+package com.boulderscoring.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

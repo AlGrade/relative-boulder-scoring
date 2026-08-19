@@ -1,4 +1,4 @@
-package com.boulderscoring.scoring;
+package com.boulderscoring.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.boulderscoring.ascent.Ascent;
-import com.boulderscoring.ascent.AscentRepository;
-import com.boulderscoring.boulder.Boulder;
-import com.boulderscoring.boulder.BoulderRepository;
-import com.boulderscoring.competitor.CompetitorRepository;
-import com.boulderscoring.competitor.Gender;
+import com.boulderscoring.dto.BoulderPoints;
+import com.boulderscoring.dto.RankingEntry;
+import com.boulderscoring.model.Ascent;
+import com.boulderscoring.model.Boulder;
+import com.boulderscoring.model.Gender;
+import com.boulderscoring.repository.AscentRepository;
+import com.boulderscoring.repository.BoulderRepository;
+import com.boulderscoring.repository.CompetitorRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  * for women and men.
  */
 @Service
-class ScoringService {
+public class ScoringService {
 
 	private static final double POINTS_PER_BOULDER = 1000d;
 
@@ -41,7 +43,7 @@ class ScoringService {
 
 	/** What each boulder is currently worth, most valuable first. */
 	@Transactional(readOnly = true)
-	List<BoulderPoints> boulderPoints(Gender gender) {
+	public List<BoulderPoints> boulderPoints(Gender gender) {
 		return snapshot(gender).pointsByBoulder()
 			.entrySet()
 			.stream()
@@ -54,7 +56,7 @@ class ScoringService {
 
 	/** Ranking of one scoring class. Whoever sent nothing is listed with 0 points. */
 	@Transactional(readOnly = true)
-	List<RankingEntry> ranking(Gender gender) {
+	public List<RankingEntry> ranking(Gender gender) {
 		Snapshot snapshot = snapshot(gender);
 
 		Map<Long, Double> totals = new HashMap<>();

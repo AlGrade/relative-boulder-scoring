@@ -1,4 +1,6 @@
-package com.boulderscoring.competitor;
+package com.boulderscoring.security;
+
+import com.boulderscoring.repository.CompetitorRepository;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

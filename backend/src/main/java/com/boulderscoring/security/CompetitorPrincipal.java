@@ -1,7 +1,10 @@
-package com.boulderscoring.competitor;
+package com.boulderscoring.security;
 
 import java.util.Collection;
 import java.util.List;
+
+import com.boulderscoring.model.Competitor;
+import com.boulderscoring.model.Gender;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

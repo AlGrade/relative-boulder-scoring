@@ -39,12 +39,14 @@ relative-boulder-scoring/
 ├── compose.yaml     # PostgreSQL für lokale Entwicklung
 ├── backend/         # Spring-Boot-API (Port 8080)
 │   └── src/main/java/com/boulderscoring/
-│       ├── competitor/   Teilnehmer, Registrierung, Login
-│       ├── boulder/      Boulder der laufenden Runde (nur lesend)
-│       ├── ascent/       Begehungen inkl. Flash-Flag
-│       ├── scoring/      relative Wertung, Rangliste, Boulderwerte
-│       ├── config/       Spring Security
-│       └── web/          Fehler-Mapping auf ProblemDetail
+│       ├── controller/   REST-Endpunkte
+│       ├── service/      Fachlogik, darunter die relative Wertung
+│       ├── repository/   Spring-Data-JPA-Repositories
+│       ├── model/        JPA-Entities: Competitor, Boulder, Ascent, Gender
+│       ├── dto/          Request- und Response-Records
+│       ├── security/     Principal und UserDetailsService
+│       ├── exception/    Fachfehler und ihr Mapping auf ProblemDetail
+│       └── config/       Spring-Security-Konfiguration
 └── frontend/        # Angular-App (Port 4200)
 ```
 

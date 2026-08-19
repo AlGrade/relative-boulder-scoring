@@ -1,8 +1,11 @@
-package com.boulderscoring.scoring;
+package com.boulderscoring.controller;
 
 import java.util.List;
 
-import com.boulderscoring.competitor.Gender;
+import com.boulderscoring.dto.BoulderPoints;
+import com.boulderscoring.dto.RankingEntry;
+import com.boulderscoring.model.Gender;
+import com.boulderscoring.service.ScoringService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +31,4 @@ class ScoringController {
 	List<BoulderPoints> boulderPoints(@RequestParam Gender gender) {
 		return scoring.boulderPoints(gender);
 	}
-}
-
-record RankingEntry(int rank, String name, double points) {
-}
-
-record BoulderPoints(int boulderNumber, double points) {
 }

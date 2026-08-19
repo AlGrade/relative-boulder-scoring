@@ -1,4 +1,11 @@
-package com.boulderscoring.competitor;
+package com.boulderscoring.controller;
+
+import com.boulderscoring.dto.CompetitorResponse;
+import com.boulderscoring.dto.LoginRequest;
+import com.boulderscoring.dto.RegisterRequest;
+import com.boulderscoring.model.Competitor;
+import com.boulderscoring.security.CompetitorPrincipal;
+import com.boulderscoring.service.CompetitorService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

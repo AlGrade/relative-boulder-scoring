@@ -1,7 +1,4 @@
-package com.boulderscoring.web;
-
-import com.boulderscoring.boulder.BoulderNotFoundException;
-import com.boulderscoring.competitor.NameAlreadyTakenException;
+package com.boulderscoring.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

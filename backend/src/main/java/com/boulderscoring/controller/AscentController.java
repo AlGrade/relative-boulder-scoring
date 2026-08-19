@@ -1,8 +1,11 @@
-package com.boulderscoring.ascent;
+package com.boulderscoring.controller;
 
 import java.util.List;
 
-import com.boulderscoring.competitor.CompetitorPrincipal;
+import com.boulderscoring.dto.AscentRequest;
+import com.boulderscoring.dto.AscentResponse;
+import com.boulderscoring.security.CompetitorPrincipal;
+import com.boulderscoring.service.AscentService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,15 +44,5 @@ class AscentController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void remove(@AuthenticationPrincipal CompetitorPrincipal me, @PathVariable int boulderNumber) {
 		ascents.remove(me.id(), boulderNumber);
-	}
-}
-
-record AscentRequest(boolean flashed) {
-}
-
-record AscentResponse(int boulderNumber, boolean flashed) {
-
-	static AscentResponse of(Ascent ascent) {
-		return new AscentResponse(ascent.getBoulder().getNumber(), ascent.isFlashed());
 	}
 }

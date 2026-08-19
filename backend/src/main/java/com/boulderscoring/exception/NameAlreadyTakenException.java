@@ -1,4 +1,4 @@
-package com.boulderscoring.competitor;
+package com.boulderscoring.exception;
 
 public class NameAlreadyTakenException extends RuntimeException {
 

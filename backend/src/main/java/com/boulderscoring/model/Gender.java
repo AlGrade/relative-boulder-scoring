@@ -1,4 +1,4 @@
-package com.boulderscoring.competitor;
+package com.boulderscoring.model;
 
 /**
  * Scoring class. Boulder points and ranking are calculated per class; the German
