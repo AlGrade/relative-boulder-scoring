@@ -5,19 +5,7 @@
 
 <div class="separator"></div>
 
-<nav class="tabs" role="tablist">
-  @for (entry of tabs; track entry.id) {
-    <button
-      type="button"
-      role="tab"
-      [class.active]="tab() === entry.id"
-      [attr.aria-selected]="tab() === entry.id"
-      (click)="tab.set(entry.id)"
-    >
-      {{ entry.label }}
-    </button>
-  }
-</nav>
+<app-tabs [options]="tabs" [(selected)]="tab" label="Ansicht" />
 
 <section>
   @switch (tab()) {

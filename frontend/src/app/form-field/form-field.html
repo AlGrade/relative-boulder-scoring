@@ -1,0 +1,7 @@
+<label>
+  {{ label() }}
+  <ng-content />
+  @if (error(); as message) {
+    <small class="hint error">{{ message }}</small>
+  }
+</label>

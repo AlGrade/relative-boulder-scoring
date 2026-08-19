@@ -5,12 +5,13 @@ import { AuthService } from '../core/auth.service';
 import { BoulderList } from '../boulder-list/boulder-list';
 import { BoulderPoints } from '../boulder-points/boulder-points';
 import { Ranking } from '../ranking/ranking';
+import { TabOption, Tabs } from '../tabs/tabs';
 
 type Tab = 'boulders' | 'ranking' | 'points';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [BoulderList, BoulderPoints, Ranking],
+  imports: [BoulderList, BoulderPoints, Ranking, Tabs],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,7 +23,7 @@ export class Dashboard {
   protected readonly tab = signal<Tab>('boulders');
   protected readonly firstName = computed(() => this.auth.competitor()?.name.split(' ')[0] ?? '');
 
-  protected readonly tabs: readonly { id: Tab; label: string }[] = [
+  protected readonly tabs: readonly TabOption<Tab>[] = [
     { id: 'boulders', label: 'Boulder' },
     { id: 'ranking', label: 'Ranking' },
     { id: 'points', label: 'Punkte' },

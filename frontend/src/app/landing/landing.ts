@@ -6,14 +6,16 @@ import { Observable } from 'rxjs';
 import { errorMessage } from '../core/api';
 import { AuthService } from '../core/auth.service';
 import { GENDERS, Gender } from '../core/models';
+import { FormField } from '../form-field/form-field';
 import { Loading } from '../loading/loading';
 import { Ranking } from '../ranking/ranking';
+import { TabOption, Tabs } from '../tabs/tabs';
 
 type Mode = 'login' | 'register';
 
 @Component({
   selector: 'app-landing',
-  imports: [Loading, ReactiveFormsModule, Ranking],
+  imports: [FormField, Loading, ReactiveFormsModule, Ranking, Tabs],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,6 +26,10 @@ export class Landing {
   private readonly formBuilder = inject(FormBuilder);
 
   protected readonly genders = GENDERS;
+  protected readonly modes: readonly TabOption<Mode>[] = [
+    { id: 'login', label: 'Login' },
+    { id: 'register', label: 'Registrierung' },
+  ];
   // Die meisten kommen zum ersten Mal und legen erst ein Konto an.
   protected readonly mode = signal<Mode>('register');
   protected readonly error = signal('');

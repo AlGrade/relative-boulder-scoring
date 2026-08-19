@@ -1,4 +1,4 @@
-<app-gender-tabs [(gender)]="gender" />
+<app-tabs [options]="genders" [(selected)]="gender" label="Wertungsklasse" />
 
 @if (entries.isLoading()) {
   <app-loading />

@@ -36,6 +36,8 @@ export class BoulderList {
   private readonly ascents = linkedSignal(() => this.serverAscents.value());
 
   private readonly inFlight = signal(0);
+  /** A failed save is the one error a competitor must not miss in the gym. */
+  protected readonly failed = signal(false);
 
   private readonly byNumber = computed(
     () => new Map(this.ascents().map((ascent) => [ascent.boulderNumber, ascent])),
@@ -80,6 +82,7 @@ export class BoulderList {
    * late answer cannot overwrite a tap that is still on its way.
    */
   private send(request: Observable<void>): void {
+    this.failed.set(false);
     this.inFlight.update((count) => count + 1);
     request
       .pipe(
@@ -90,6 +93,7 @@ export class BoulderList {
           }
         }),
       )
-      .subscribe({ error: () => undefined });
+      // The reload above puts the real state back; this only says why it jumped.
+      .subscribe({ error: () => this.failed.set(true) });
   }
 }

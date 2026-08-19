@@ -1,8 +1,8 @@
 export type Gender = 'MALE' | 'FEMALE';
 
-export const GENDERS: readonly { value: Gender; label: string }[] = [
-  { value: 'MALE', label: 'Männlich' },
-  { value: 'FEMALE', label: 'Weiblich' },
+export const GENDERS: readonly { id: Gender; label: string }[] = [
+  { id: 'MALE', label: 'Männlich' },
+  { id: 'FEMALE', label: 'Weiblich' },
 ];
 
 export interface Competitor {
