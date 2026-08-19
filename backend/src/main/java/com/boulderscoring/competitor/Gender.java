@@ -1,8 +1,8 @@
 package com.boulderscoring.competitor;
 
 /**
- * Wertungsklasse. Boulderwerte und Ranking werden je Klasse getrennt gerechnet,
- * deutsche Beschriftungen macht das Frontend.
+ * Scoring class. Boulder points and ranking are calculated per class; the German
+ * labels are the frontend's job.
  */
 public enum Gender {
 	MALE,

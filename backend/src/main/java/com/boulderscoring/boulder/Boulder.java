@@ -8,8 +8,8 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 
 /**
- * Ein Boulder der laufenden Runde. Boulder werden direkt per SQL angelegt
- * (siehe README) — die Anwendung liest sie nur.
+ * A boulder of the current round. Boulders are created directly via SQL (see the
+ * README) - the application only reads them.
  */
 @Entity
 @Getter
@@ -23,6 +23,6 @@ public class Boulder {
 	private int number;
 
 	protected Boulder() {
-		// fuer Hibernate
+		// for Hibernate
 	}
 }

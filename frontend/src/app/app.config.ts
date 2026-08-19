@@ -14,11 +14,11 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    // Angular schickt den Wert des XSRF-TOKEN-Cookies automatisch als X-XSRF-TOKEN
-    // mit — passend zu dem, was Spring Security erwartet.
+    // Angular sends the value of the XSRF-TOKEN cookie as X-XSRF-TOKEN by itself,
+    // which is exactly what Spring Security expects.
     provideHttpClient(withFetch()),
-    // Session einmal aufloesen, bevor die erste Route aktiviert wird. Danach koennen
-    // die Guards synchron entscheiden, und das CSRF-Cookie steht.
+    // Resolve the session once before the first route activates. After that the
+    // guards can decide synchronously, and the CSRF cookie is in place.
     provideAppInitializer(() => inject(AuthService).loadCurrent()),
   ],
 };

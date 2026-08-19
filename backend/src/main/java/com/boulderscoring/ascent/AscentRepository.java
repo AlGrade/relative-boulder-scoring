@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AscentRepository extends JpaRepository<Ascent, Long> {
 
-	/** Grundlage der Wertung: alle Begehungen einer Wertungsklasse in einer Query. */
+	/** Basis of the scoring: every ascent of one scoring class in a single query. */
 	@EntityGraph(attributePaths = { "competitor", "boulder" })
 	List<Ascent> findAllByCompetitorGender(Gender gender);
 

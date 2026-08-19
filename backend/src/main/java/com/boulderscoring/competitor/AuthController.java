@@ -40,7 +40,7 @@ class AuthController {
 	CompetitorResponse register(@Valid @RequestBody RegisterRequest body, HttpServletRequest request,
 			HttpServletResponse response) {
 		Competitor competitor = competitors.register(body.name(), body.gender(), body.password());
-		// Direkt einloggen — wer sich registriert, will nicht gleich ein Login-Formular sehen.
+		// Log in right away - whoever just registered should not face a login form next.
 		startSession(competitor.getName(), body.password(), request, response);
 		return new CompetitorResponse(competitor.getId(), competitor.getName(), competitor.getGender());
 	}
@@ -63,8 +63,8 @@ class AuthController {
 	}
 
 	/**
-	 * Login von Hand statt ueber {@code formLogin} — das erwartet Form-Encoding, wir
-	 * sprechen JSON. Die Session-ID wechselt dabei bewusst (Session Fixation).
+	 * Login by hand instead of {@code formLogin}, which expects form encoding while we
+	 * speak JSON. The session id deliberately changes along the way (session fixation).
 	 */
 	private CompetitorPrincipal startSession(String name, String password, HttpServletRequest request,
 			HttpServletResponse response) {

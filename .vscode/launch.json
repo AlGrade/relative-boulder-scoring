@@ -7,8 +7,8 @@
       "request": "launch",
       "mainClass": "com.boulderscoring.BackendApplication",
       "projectName": "backend",
-      // Ohne das startet VS Code im Repo-Root und spring.docker.compose.file
-      // (../compose.yaml, relativ zu backend/) zeigt ins Leere.
+      // Without this VS Code starts in the repo root and spring.docker.compose.file
+      // (../compose.yaml, relative to backend/) points nowhere.
       "cwd": "${workspaceFolder}/backend"
     }
   ]

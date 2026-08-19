@@ -7,8 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * Traegt die Competitor-ID mit in den Security-Context, damit Controller ueber
- * {@code @AuthenticationPrincipal} ohne zusaetzliche Query an sie herankommen.
+ * Carries the competitor id into the security context so controllers can reach it
+ * through {@code @AuthenticationPrincipal} without an extra query.
  */
 public record CompetitorPrincipal(Long id, String name, Gender gender, String passwordHash) implements UserDetails {
 

@@ -31,7 +31,7 @@ class AscentService {
 			.toList();
 	}
 
-	/** Legt die Begehung an, falls es sie noch nicht gibt, und setzt das Flash-Flag. */
+	/** Creates the ascent if it does not exist yet and sets the flash flag. */
 	@Transactional
 	void record(Long competitorId, int boulderNumber, boolean flashed) {
 		Ascent ascent = ascents.findByCompetitorIdAndBoulderNumber(competitorId, boulderNumber)
@@ -40,7 +40,7 @@ class AscentService {
 		ascents.save(ascent);
 	}
 
-	/** Entfernt die Begehung samt Flash. */
+	/** Removes the ascent along with its flash. */
 	@Transactional
 	void remove(Long competitorId, int boulderNumber) {
 		ascents.deleteByCompetitorIdAndBoulderNumber(competitorId, boulderNumber);

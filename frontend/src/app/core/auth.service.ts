@@ -14,8 +14,8 @@ export class AuthService {
   readonly isLoggedIn = computed(() => this.current() !== null);
 
   /**
-   * Einmal beim App-Start: existiert eine Session? 401 heißt schlicht "nicht eingeloggt".
-   * Der Aufruf setzt nebenbei das CSRF-Cookie für den ersten schreibenden Request.
+   * Once at app start: is there a session? A 401 simply means "not logged in".
+   * The call also sets the CSRF cookie for the first writing request.
    */
   loadCurrent(): Observable<Competitor | null> {
     return this.http.get<Competitor>(Api.me).pipe(

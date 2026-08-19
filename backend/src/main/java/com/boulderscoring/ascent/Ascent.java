@@ -17,8 +17,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Eine Begehung: dieser Teilnehmer hat diesen Boulder geschafft. Ein Flash ist ein
- * Flag darauf — dadurch ist ein Flash ohne Begehung strukturell unmoeglich.
+ * An ascent: this competitor sent this boulder. A flash is a flag on it, which makes
+ * a flash without an ascent structurally impossible.
  */
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "competitor_id", "boulder_id" }))
@@ -42,7 +42,7 @@ public class Ascent {
 	private boolean flashed;
 
 	protected Ascent() {
-		// fuer Hibernate
+		// for Hibernate
 	}
 
 	Ascent(Competitor competitor, Boulder boulder) {

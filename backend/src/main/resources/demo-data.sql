@@ -1,16 +1,16 @@
--- Beispiel-Runde fuer die lokale Entwicklung, damit Rangliste und Boulderwerte
--- sofort etwas zu zeigen haben. Laeuft bei jedem Start; jedes Statement ist durch
--- ON CONFLICT DO NOTHING idempotent und laesst vorhandene Daten unangetastet.
+-- Sample round for local development so ranking and boulder points have something
+-- to show right away. Runs on every start; every statement is idempotent through
+-- ON CONFLICT DO NOTHING and leaves existing data untouched.
 --
--- Eingebunden ueber spring.sql.init.data-locations in application.yaml — fuer einen
--- echten Wettkampf dort spring.sql.init.mode auf never stellen.
+-- Wired up via spring.sql.init.data-locations in application.yaml - for a real
+-- competition set spring.sql.init.mode to never there.
 
--- 15 Boulder.
+-- 15 boulders.
 INSERT INTO boulder (number)
 SELECT generate_series(1, 15)
 ON CONFLICT DO NOTHING;
 
--- Alle Teilnehmer haben das Passwort "geheim123".
+-- Every competitor has the password "geheim123".
 INSERT INTO competitor (name, gender, password_hash)
 VALUES ('Alex Gruber', 'MALE', '$2y$10$f1BfsZRcmv3wuyuAPMfEZuSKrsExG5kML6q30bbSnDLh9Ed1JHgEm'),
        ('Ben Huber', 'MALE', '$2y$10$f1BfsZRcmv3wuyuAPMfEZuSKrsExG5kML6q30bbSnDLh9Ed1JHgEm'),
@@ -24,9 +24,9 @@ VALUES ('Alex Gruber', 'MALE', '$2y$10$f1BfsZRcmv3wuyuAPMfEZuSKrsExG5kML6q30bbSn
        ('Julia Koch', 'FEMALE', '$2y$10$f1BfsZRcmv3wuyuAPMfEZuSKrsExG5kML6q30bbSnDLh9Ed1JHgEm')
 ON CONFLICT DO NOTHING;
 
--- Begehungen: erste Spalte geschafft, zweite davon geflasht (immer eine Teilmenge).
--- Bewusst ungleich verteilt — die niedrigen Nummern haben viele Begehungen und sind
--- entsprechend wenig wert, Boulder 15 hat niemand geschafft und steht bei vollen 1000.
+-- Ascents: first array is what they sent, second which of those were flashed
+-- (always a subset). Deliberately uneven - the low numbers have many ascents and are
+-- worth little accordingly, boulder 15 nobody sent and it sits at the full 1000.
 INSERT INTO ascent (competitor_id, boulder_id, flashed)
 SELECT c.id, b.id, sent.number = ANY (v.flashed)
 FROM (VALUES ('Alex Gruber', ARRAY [1,2,3,4,5,6,8,10,12], ARRAY [1,2,4]),

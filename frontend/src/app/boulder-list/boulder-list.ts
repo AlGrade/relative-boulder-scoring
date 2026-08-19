@@ -30,7 +30,7 @@ export class BoulderList {
     return this.byNumber().get(boulderNumber)?.flashed ?? false;
   }
 
-  /** Begehung zurücknehmen löscht auch einen gesetzten Flash — der hängt daran. */
+  /** Taking the ascent back also drops a flash, which hangs off it. */
   protected toggleSent(boulderNumber: number): void {
     this.send(
       this.isSent(boulderNumber)
@@ -39,7 +39,7 @@ export class BoulderList {
     );
   }
 
-  /** Ein Flash legt die Begehung mit an, ein Un-Flash lässt sie stehen. */
+  /** A flash creates the ascent as well; un-flashing leaves it in place. */
   protected toggleFlashed(boulderNumber: number): void {
     this.send(
       this.http.put<void>(Api.ascent(boulderNumber), { flashed: !this.isFlashed(boulderNumber) }),

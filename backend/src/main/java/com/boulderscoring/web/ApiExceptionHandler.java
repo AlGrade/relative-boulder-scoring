@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Alles andere (Bean Validation, unbekannte Pfade) beantwortet Spring selbst als
- * ProblemDetail, siehe {@code spring.mvc.problemdetails.enabled}.
+ * Everything else (bean validation, unknown paths) is answered by Spring itself as a
+ * ProblemDetail, see {@code spring.mvc.problemdetails.enabled}.
  */
 @RestControllerAdvice
 class ApiExceptionHandler {

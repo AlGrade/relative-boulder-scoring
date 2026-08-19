@@ -15,7 +15,7 @@ import { GenderTabs } from '../gender-tabs/gender-tabs';
 export class Ranking {
   protected readonly gender = signal<Gender>('MALE');
 
-  // Laedt bei jedem Wechsel der Wertungsklasse neu.
+  // Reloads whenever the scoring class changes.
   protected readonly entries = httpResource<RankingEntry[]>(() => Api.ranking(this.gender()), {
     defaultValue: [],
   });

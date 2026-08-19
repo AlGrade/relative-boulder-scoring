@@ -4,8 +4,8 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
 /**
- * Beide Guards dürfen synchron entscheiden: die Session ist beim App-Start
- * aufgelöst worden (siehe `provideAppInitializer` in `app.config.ts`).
+ * Both guards may decide synchronously: the session was resolved at app start
+ * (see `provideAppInitializer` in `app.config.ts`).
  */
 export const authGuard: CanActivateFn = () =>
   inject(AuthService).isLoggedIn() || inject(Router).createUrlTree(['/']);

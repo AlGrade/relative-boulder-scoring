@@ -33,8 +33,8 @@ body {
   line-height: 1.5;
 }
 
-/* Sammelstellen, die mehrere Komponenten teilen. Alles Spezifische liegt bei der
-   Komponente selbst. */
+/* Shared pieces used by several components. Anything specific lives with the
+   component itself. */
 
 .card {
   padding: 1rem;

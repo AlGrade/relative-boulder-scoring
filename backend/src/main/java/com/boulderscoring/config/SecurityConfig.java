@@ -41,26 +41,25 @@ class SecurityConfig {
 			.authorizeHttpRequests(requests -> requests
 				.requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login")
 				.permitAll()
-				// Rangliste und Boulderwerte sind oeffentlich — die Landing Page zeigt
-				// sie auch ohne Login.
+				// Ranking and boulder points are public - the landing page shows
+				// them without a login too.
 				.requestMatchers(HttpMethod.GET, "/api/boulders", "/api/ranking", "/api/boulder-points")
 				.permitAll()
 				.requestMatchers("/actuator/health")
 				.permitAll()
 				.anyRequest()
 				.authenticated())
-			// Ohne Login gibt es 401 statt eines Redirects auf ein Login-Formular,
-			// das es hier nicht gibt.
+			// Without a login this returns 401 instead of redirecting to a login
+			// form that does not exist here.
 			.exceptionHandling(handling -> handling.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
 			.build();
 	}
 
 	/**
-	 * Der Default-Handler verschluesselt den CSRF-Token pro Request (BREACH-Schutz) und
-	 * ist damit inkompatibel damit, dass Angular den rohen Cookie-Wert als
-	 * {@code X-XSRF-TOKEN} zurueckschickt. Das Nullen des Request-Attributnamens laedt
-	 * den Token ausserdem bei jedem Request, sodass das Cookie schon vor dem ersten
-	 * schreibenden Aufruf gesetzt ist.
+	 * The default handler encrypts the CSRF token per request (BREACH protection),
+	 * which is incompatible with Angular sending the raw cookie value back as
+	 * {@code X-XSRF-TOKEN}. Nulling the request attribute name also resolves the token
+	 * on every request, so the cookie is in place before the first writing call.
 	 */
 	private static CsrfTokenRequestAttributeHandler spaCsrfTokenRequestHandler() {
 		CsrfTokenRequestAttributeHandler handler = new CsrfTokenRequestAttributeHandler();

@@ -18,9 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Die relative Wertung: ein Boulder ist umso mehr wert, je weniger Leute ihn geschafft
- * haben. Gerechnet wird je Wertungsklasse getrennt, ein Boulder kann also fuer Frauen
- * und Maenner unterschiedlich viel zaehlen.
+ * The relative scoring: a boulder is worth more the fewer people have sent it.
+ * Calculated per scoring class, so the same boulder can be worth different amounts
+ * for women and men.
  */
 @Service
 class ScoringService {
@@ -39,7 +39,7 @@ class ScoringService {
 		this.competitors = competitors;
 	}
 
-	/** Was jeder Boulder aktuell wert ist, der wertvollste zuerst. */
+	/** What each boulder is currently worth, most valuable first. */
 	@Transactional(readOnly = true)
 	List<BoulderPoints> boulderPoints(Gender gender) {
 		return snapshot(gender).pointsByBoulder()
@@ -52,7 +52,7 @@ class ScoringService {
 			.toList();
 	}
 
-	/** Rangliste einer Wertungsklasse. Wer nichts geschafft hat, steht mit 0 Punkten drin. */
+	/** Ranking of one scoring class. Whoever sent nothing is listed with 0 points. */
 	@Transactional(readOnly = true)
 	List<RankingEntry> ranking(Gender gender) {
 		Snapshot snapshot = snapshot(gender);
@@ -77,9 +77,9 @@ class ScoringService {
 	}
 
 	/**
-	 * Ein Durchlauf ueber die Wertungsklasse: alle Begehungen plus der daraus abgeleitete
-	 * Wert jedes Boulders. Boulder, die niemand geschafft hat, sind volle
-	 * {@value #POINTS_PER_BOULDER} Punkte wert.
+	 * One pass over a scoring class: every ascent plus the boulder values derived from
+	 * them. Boulders nobody has sent are worth the full
+	 * {@value #POINTS_PER_BOULDER} points.
 	 */
 	private Snapshot snapshot(Gender gender) {
 		List<Ascent> genderAscents = ascents.findAllByCompetitorGender(gender);
@@ -99,7 +99,7 @@ class ScoringService {
 		return ascentCount == 0 ? POINTS_PER_BOULDER : POINTS_PER_BOULDER / ascentCount;
 	}
 
-	/** Gleiche Punkte bedeuten gleichen Rang, der naechste Rang ueberspringt entsprechend. */
+	/** Equal points mean equal rank; the next rank skips accordingly. */
 	private static List<RankingEntry> withRanks(List<RankingEntry> sortedByPoints) {
 		List<RankingEntry> ranked = new ArrayList<>(sortedByPoints.size());
 		double previousPoints = Double.NaN;

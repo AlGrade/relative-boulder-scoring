@@ -28,7 +28,7 @@ public class Competitor {
 	private String passwordHash;
 
 	protected Competitor() {
-		// fuer Hibernate
+		// for Hibernate
 	}
 
 	public Competitor(String name, Gender gender, String passwordHash) {

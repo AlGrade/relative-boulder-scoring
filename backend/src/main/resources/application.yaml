@@ -2,8 +2,8 @@ spring:
   application:
     name: relative-boulder-scoring
 
-  # Spring Boot startet den Postgres-Container aus dem Repo-Root automatisch,
-  # sobald die App im Dev-Modus laeuft, und leitet die Datasource darauf um.
+  # Spring Boot starts the Postgres container from the repo root automatically once
+  # the app runs in dev mode and points the datasource at it.
   docker:
     compose:
       enabled: true
@@ -12,20 +12,19 @@ spring:
 
   jpa:
     open-in-view: false
-    # Damit demo-data.sql erst laeuft, wenn Hibernate die Tabellen angelegt hat.
+    # Makes demo-data.sql run only after Hibernate has created the tables.
     defer-datasource-initialization: true
     hibernate:
-      # Dev-Setup: Hibernate zieht das Schema aus den Entities nach.
-      # Sobald das Datenmodell steht, auf validate umstellen und
-      # Schema-Aenderungen ueber ein Migrationstool fahren.
+      # Dev setup: Hibernate derives the schema from the entities.
+      # Once the data model has settled, switch to validate and run
+      # schema changes through a migration tool.
       ddl-auto: update
     properties:
       hibernate:
         jdbc.time_zone: UTC
 
-  # Beispiel-Runde fuer die lokale Entwicklung (siehe demo-data.sql). Das Skript ist
-  # idempotent und laeuft bei jedem Start mit; fuer einen echten Wettkampf hier auf
-  # never stellen.
+  # Sample round for local development (see demo-data.sql). The script is idempotent
+  # and runs along on every start; set this to never for a real competition.
   sql:
     init:
       mode: always
@@ -33,7 +32,7 @@ spring:
 
   mvc:
     problemdetails:
-      # Fehler kommen als RFC-9457-Body zurueck, auch Bean-Validation-Verstoesse.
+      # Errors come back as an RFC 9457 body, bean validation failures included.
       enabled: true
 
   threads:

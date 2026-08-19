@@ -16,8 +16,8 @@ class CompetitorService {
 	}
 
 	/**
-	 * Der Vorab-Check faengt den Normalfall ab, den Unique-Index auf {@code name}
-	 * braucht es trotzdem — er entscheidet bei zwei gleichzeitigen Registrierungen.
+	 * The upfront check covers the normal case; the unique index on {@code name} is
+	 * still needed - it decides when two registrations race each other.
 	 */
 	@Transactional
 	Competitor register(String name, Gender gender, String rawPassword) {
