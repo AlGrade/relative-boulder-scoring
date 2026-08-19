@@ -8,6 +8,12 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <app-root></app-root>
+  <app-root>
+    <!-- Shown until Angular has booted and resolved the session; the app replaces it. -->
+    <div class="loading loading-page" role="status" aria-live="polite">
+      <div class="loading-circle" aria-hidden="true"></div>
+      <p class="loading-label">Lädt…</p>
+    </div>
+  </app-root>
 </body>
 </html>

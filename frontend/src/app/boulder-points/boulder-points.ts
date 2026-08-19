@@ -4,10 +4,11 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { Api } from '../core/api';
 import { BoulderPoints as BoulderPointsEntry, Gender } from '../core/models';
 import { GenderTabs } from '../gender-tabs/gender-tabs';
+import { Loading } from '../loading/loading';
 
 @Component({
   selector: 'app-boulder-points',
-  imports: [GenderTabs],
+  imports: [GenderTabs, Loading],
   templateUrl: './boulder-points.html',
   styleUrl: './boulder-points.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

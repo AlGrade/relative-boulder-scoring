@@ -25,7 +25,9 @@
     </button>
   </div>
 
-  @if (mode() === 'login') {
+  @if (busy()) {
+    <app-loading />
+  } @else if (mode() === 'login') {
     <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
       <label>
         Name

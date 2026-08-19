@@ -6,13 +6,14 @@ import { Observable } from 'rxjs';
 import { errorMessage } from '../core/api';
 import { AuthService } from '../core/auth.service';
 import { GENDERS, Gender } from '../core/models';
+import { Loading } from '../loading/loading';
 import { Ranking } from '../ranking/ranking';
 
 type Mode = 'login' | 'register';
 
 @Component({
   selector: 'app-landing',
-  imports: [ReactiveFormsModule, Ranking],
+  imports: [Loading, ReactiveFormsModule, Ranking],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

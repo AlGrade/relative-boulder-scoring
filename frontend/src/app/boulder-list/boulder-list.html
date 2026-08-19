@@ -1,5 +1,5 @@
 @if (boulders.isLoading()) {
-  <p class="hint">Laden…</p>
+  <app-loading />
 } @else if (boulders.value().length === 0) {
   <p class="hint">Es sind noch keine Boulder eingetragen.</p>
 } @else {

@@ -3,7 +3,7 @@
 <p class="hint">Ein Boulder ist umso mehr wert, je weniger Leute ihn geschafft haben.</p>
 
 @if (points.isLoading()) {
-  <p class="hint">Laden…</p>
+  <app-loading />
 } @else if (points.error()) {
   <p class="hint error">Boulderwerte konnten nicht geladen werden.</p>
 } @else if (points.value().length === 0) {

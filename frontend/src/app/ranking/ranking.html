@@ -1,7 +1,7 @@
 <app-gender-tabs [(gender)]="gender" />
 
 @if (entries.isLoading()) {
-  <p class="hint">Laden…</p>
+  <app-loading />
 } @else if (entries.error()) {
   <p class="hint error">Rangliste konnte nicht geladen werden.</p>
 } @else if (entries.value().length === 0) {

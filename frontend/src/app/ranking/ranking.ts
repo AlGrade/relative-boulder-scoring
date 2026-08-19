@@ -4,10 +4,11 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { Api } from '../core/api';
 import { Gender, RankingEntry } from '../core/models';
 import { GenderTabs } from '../gender-tabs/gender-tabs';
+import { Loading } from '../loading/loading';
 
 @Component({
   selector: 'app-ranking',
-  imports: [GenderTabs],
+  imports: [GenderTabs, Loading],
   templateUrl: './ranking.html',
   styleUrl: './ranking.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

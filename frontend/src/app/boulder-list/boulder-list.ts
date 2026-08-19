@@ -11,9 +11,11 @@ import { Observable, finalize } from 'rxjs';
 
 import { Api } from '../core/api';
 import { Ascent, Boulder } from '../core/models';
+import { Loading } from '../loading/loading';
 
 @Component({
   selector: 'app-boulder-list',
+  imports: [Loading],
   templateUrl: './boulder-list.html',
   styleUrl: './boulder-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
