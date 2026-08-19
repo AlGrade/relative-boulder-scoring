@@ -125,6 +125,8 @@ body {
   margin: 0.35rem 0;
   color: var(--text-muted);
   font-size: 0.9rem;
+  /* Inside a label it would otherwise inherit the bold label weight. */
+  font-weight: 400;
 }
 
 .error {
@@ -169,6 +171,11 @@ button {
    suppressed first and handed back only to keyboard users. */
 button:focus {
   outline: none;
+}
+
+input[aria-invalid='true'],
+select[aria-invalid='true'] {
+  border-color: var(--danger);
 }
 
 input:focus-visible,

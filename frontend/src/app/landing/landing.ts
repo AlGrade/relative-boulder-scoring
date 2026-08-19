@@ -24,10 +24,13 @@ export class Landing {
   private readonly formBuilder = inject(FormBuilder);
 
   protected readonly genders = GENDERS;
-  protected readonly mode = signal<Mode>('login');
+  // Die meisten kommen zum ersten Mal und legen erst ein Konto an.
+  protected readonly mode = signal<Mode>('register');
   protected readonly error = signal('');
   protected readonly busy = signal(false);
   protected readonly showRanking = signal(false);
+  /** Messages appear once someone has tried to submit, not while they are typing. */
+  private readonly submitted = signal(false);
 
   protected readonly loginForm = this.formBuilder.nonNullable.group({
     name: ['', Validators.required],
@@ -37,17 +40,40 @@ export class Landing {
   protected readonly registerForm = this.formBuilder.nonNullable.group({
     name: ['', Validators.required],
     gender: ['' as Gender | '', Validators.required],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    password: ['', [Validators.required, Validators.minLength(4)]],
   });
 
   protected setMode(mode: Mode): void {
     this.mode.set(mode);
     this.error.set('');
+    this.submitted.set(false);
+  }
+
+  protected loginError(field: 'name' | 'password'): string | null {
+    if (!this.submitted() || this.loginForm.controls[field].valid) {
+      return null;
+    }
+    return field === 'name' ? 'Bitte gib deinen Namen ein.' : 'Bitte gib dein Passwort ein.';
+  }
+
+  protected registerError(field: 'name' | 'gender' | 'password'): string | null {
+    const control = this.registerForm.controls[field];
+    if (!this.submitted() || control.valid) {
+      return null;
+    }
+    if (control.hasError('minlength')) {
+      return 'Das Passwort braucht mindestens 4 Zeichen.';
+    }
+    return {
+      name: 'Bitte gib deinen Namen ein.',
+      gender: 'Bitte wähle dein Geschlecht.',
+      password: 'Bitte wähle ein Passwort.',
+    }[field];
   }
 
   protected submitLogin(): void {
+    this.submitted.set(true);
     if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
       return;
     }
     const { name, password } = this.loginForm.getRawValue();
@@ -55,8 +81,8 @@ export class Landing {
   }
 
   protected submitRegister(): void {
+    this.submitted.set(true);
     if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
       return;
     }
     const { name, gender, password } = this.registerForm.getRawValue();
