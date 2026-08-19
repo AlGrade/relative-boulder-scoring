@@ -105,6 +105,21 @@ select {
   font-weight: 400;
 }
 
+/* A tap must not leave anything behind: no grey overlay, no selected label text,
+   no 300ms delay. The keyboard focus ring below stays untouched. */
+button {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* Order matters: :focus and :focus-visible have equal specificity, so the ring is
+   suppressed first and handed back only to keyboard users. */
+button:focus {
+  outline: none;
+}
+
 input:focus-visible,
 select:focus-visible,
 button:focus-visible {
