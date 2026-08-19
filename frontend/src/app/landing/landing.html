@@ -104,12 +104,21 @@
   }
 </section>
 
-<section class="card">
-  <button type="button" class="disclosure" (click)="showRanking.set(!showRanking())">
+<section class="public-ranking">
+  <button
+    type="button"
+    class="disclosure"
+    aria-controls="public-ranking-panel"
+    [attr.aria-expanded]="showRanking()"
+    (click)="showRanking.set(!showRanking())"
+  >
     Ranking
     <span class="arrow" [class.open]="showRanking()" aria-hidden="true">▼</span>
   </button>
-  @if (showRanking()) {
-    <app-ranking />
-  }
+  <!-- Always in the DOM so aria-controls above resolves even while collapsed. -->
+  <div id="public-ranking-panel" class="panel">
+    @if (showRanking()) {
+      <app-ranking />
+    }
+  </div>
 </section>

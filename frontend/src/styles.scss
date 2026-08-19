@@ -267,8 +267,11 @@ button.primary {
   cursor: pointer;
   transition: background-color 0.3s ease;
 
-  &:hover:not(:disabled) {
-    background: var(--accent-hover);
+  /* Only where a real pointer exists - on touch the state would stick after a tap. */
+  @media (hover: hover) {
+    &:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
   }
 
   &:disabled {
@@ -287,7 +290,9 @@ button.link {
   text-decoration: underline;
   cursor: pointer;
 
-  &:hover {
-    color: var(--accent-hover);
+  @media (hover: hover) {
+    &:hover {
+      color: var(--accent-hover);
+    }
   }
 }

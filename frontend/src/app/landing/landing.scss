@@ -13,18 +13,38 @@
   }
 }
 
+/* Centred outline pill, the dropdown of the previous project. */
 .disclosure {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 0;
+  gap: 0.75rem;
+  width: min(100%, 250px);
+  padding: 0.6rem 1.25rem;
+  margin: 0 auto;
   color: var(--accent);
-  background: none;
-  border: none;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-pill);
   font: inherit;
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Only where a real pointer exists - on touch the state would stick after a tap. */
+@media (hover: hover) {
+  .disclosure:hover {
+    color: var(--on-accent);
+    background: var(--accent);
+  }
+}
+
+.panel:not(:empty) {
+  margin-top: 1.5rem;
 }
 
 .arrow {
