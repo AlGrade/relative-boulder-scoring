@@ -17,18 +17,22 @@
           class="toggle sent"
           [class.on]="isSent(boulder.number)"
           [attr.aria-pressed]="isSent(boulder.number)"
+          [attr.aria-label]="'Boulder ' + boulder.number + ' geschafft'"
+          title="Als geschafft markieren"
           (click)="toggleSent(boulder.number)"
         >
-          ✓ Geschafft
+          <span aria-hidden="true">✓</span>
         </button>
         <button
           type="button"
           class="toggle flash"
           [class.on]="isFlashed(boulder.number)"
           [attr.aria-pressed]="isFlashed(boulder.number)"
+          [attr.aria-label]="'Boulder ' + boulder.number + ' geflasht'"
+          title="Als geflasht markieren"
           (click)="toggleFlashed(boulder.number)"
         >
-          ⚡ Flash
+          <span aria-hidden="true">⚡</span>
         </button>
       </li>
     }

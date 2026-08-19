@@ -1,24 +1,19 @@
-/* Same grid as the rows, so the labels sit above their columns. */
+/* Three equal columns, same grid for the head, so the labels sit above their
+   buttons. No frame around the list - the violet rule is the only divider. */
 .boulder-head,
 .boulders li {
   display: grid;
-  grid-template-columns: 3rem 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
-  gap: 0.5rem;
+  text-align: center;
 }
 
 .boulder-head {
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.5rem;
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.25rem;
   color: var(--accent);
   border-bottom: 2px solid var(--accent);
   font-weight: bold;
-  font-size: 0.85rem;
-  text-align: center;
-
-  span:first-child {
-    text-align: left;
-  }
 }
 
 .boulders {
@@ -27,7 +22,7 @@
   list-style: none;
 
   li {
-    padding: 0.35rem 0;
+    padding: 0.5rem 0;
     border-bottom: 1px solid var(--border);
   }
 
@@ -42,15 +37,21 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Icon only, so the accessible name comes from aria-label in the template. */
 .toggle {
-  padding: 0.6rem 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 44px is the smallest target that is comfortable to hit with a thumb. */
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0 auto;
   color: var(--accent);
   background: var(--accent-soft);
   border: none;
-  border-radius: var(--radius-pill);
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: bold;
+  border-radius: 50%;
+  font-size: 1.15rem;
+  line-height: 1;
   cursor: pointer;
   transition:
     background-color 0.3s ease,
