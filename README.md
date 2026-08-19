@@ -3,7 +3,7 @@
 Wettkampf-Auswertung für Boulder-Sessions mit relativem Punktesystem: Ein Boulder ist
 umso mehr wert, je weniger Teilnehmer ihn geschafft haben.
 
-Nachfolger von `boulderauswertung` (Angular + Airtable) — diesmal mit echtem Backend
+Nachfolger von `boulderauswertung` (Angular + Airtable) - diesmal mit echtem Backend
 und echter Datenbank.
 
 ## Wertung
@@ -13,24 +13,24 @@ und echter Datenbank.
 - Ein Flash zählt für den Kletternden ×1.2. Der Wert des Boulders selbst ändert sich
   dadurch nicht.
 - Begehungen, Boulderwerte und Rangliste werden je Wertungsklasse (`MALE` / `FEMALE`)
-  getrennt gerechnet — derselbe Boulder kann in beiden Klassen unterschiedlich viel
+  getrennt gerechnet - derselbe Boulder kann in beiden Klassen unterschiedlich viel
   zählen.
 - Gleiche Punktzahl bedeutet gleicher Rang, der nächste Rang überspringt entsprechend
   (1, 1, 3).
 - Ein Flash setzt eine Begehung voraus. Nimmt jemand die Begehung zurück, ist auch der
   Flash weg; ein Un-Flash lässt die Begehung stehen.
 
-Die gesamte Rechnung steckt in `ScoringService` — im Frontend wird nur angezeigt.
+Die gesamte Rechnung steckt in `ScoringService` - im Frontend wird nur angezeigt.
 
 ## Wettkampf-Fenster
 
 `comp.open-until` ist ein Zeitpunkt, kein Schalter: bis dahin werden Registrierungen
-und Begehungen angenommen, danach nicht mehr (`403`). Lesen — Rangliste, Boulderwerte,
-Boulderliste — bleibt immer öffentlich, und einloggen kann man sich auch danach noch.
+und Begehungen angenommen, danach nicht mehr (`403`). Lesen - Rangliste, Boulderwerte,
+Boulderliste - bleibt immer öffentlich, und einloggen kann man sich auch danach noch.
 
 Bewusst ein Ablaufdatum, weil die beiden Fehler unterschiedlich weh tun: das Fenster
 nicht zu öffnen fällt binnen einer Minute auf, es nicht zu schliessen lässt monatelang
-jeden mitregistrieren, der die URL kennt. Ohne gesetzten Wert ist zu — offen ist die
+jeden mitregistrieren, der die URL kennt. Ohne gesetzten Wert ist zu - offen ist die
 Anwendung nur mit Absicht. Lokal steht der Wert auf einem Datum weit in der Zukunft.
 
 ## Stack
@@ -81,7 +81,7 @@ cd backend
 ```
 
 Spring Boots Docker-Compose-Support fährt `compose.yaml` beim Start hoch und
-verdrahtet die Datasource selbst — es müssen keine DB-Zugangsdaten gesetzt werden.
+verdrahtet die Datasource selbst - es müssen keine DB-Zugangsdaten gesetzt werden.
 Der Container läuft nach dem Beenden der App weiter (`lifecycle-management: start_only`).
 
 Beim Start läuft `backend/src/main/resources/demo-data.sql` mit und legt eine
@@ -91,7 +91,7 @@ der Namen aus dem Skript (z. B. `Chris Maier`) und dem Passwort `geheim123`.
 
 Das Skript ist idempotent (`ON CONFLICT DO NOTHING`) und läuft bei jedem Start mit,
 ohne vorhandene Daten anzufassen. Für einen echten Wettkampf in `application.yaml`
-`spring.sql.init.mode` auf `never` stellen und die Boulder direkt anlegen — die
+`spring.sql.init.mode` auf `never` stellen und die Boulder direkt anlegen - die
 Anwendung liest sie nur, einen Endpunkt dafür gibt es bewusst nicht:
 
 ```bash
@@ -123,22 +123,22 @@ docker compose up -d
 | POST    | `/api/auth/login`                 | –    | `{name, password}`                          |
 | POST    | `/api/auth/logout`                | ✓    | beendet die Session                         |
 | GET     | `/api/auth/me`                    | ✓    | aktueller Teilnehmer, sonst 401             |
-| GET     | `/api/competition`                | –    | `{open}` — nimmt der Wettkampf gerade Änderungen an? |
+| GET     | `/api/competition`                | –    | `{open}` - nimmt der Wettkampf gerade Änderungen an? |
 | GET     | `/api/boulders`                   | –    | alle Boulder nach Nummer                    |
 | GET     | `/api/me/ascents`                 | ✓    | eigene Begehungen                           |
-| PUT     | `/api/me/ascents/{nummer}`        | ✓    | `{flashed}` — legt die Begehung an, setzt den Flash |
+| PUT     | `/api/me/ascents/{nummer}`        | ✓    | `{flashed}` - legt die Begehung an, setzt den Flash |
 | DELETE  | `/api/me/ascents/{nummer}`        | ✓    | Begehung samt Flash entfernen               |
 | GET     | `/api/ranking?gender=MALE`        | –    | Rangliste                                   |
 | GET     | `/api/boulder-points?gender=MALE` | –    | aktuelle Boulderwerte                       |
 
-Rangliste und Boulderwerte sind bewusst öffentlich — die Landing Page zeigt sie auch
+Rangliste und Boulderwerte sind bewusst öffentlich - die Landing Page zeigt sie auch
 ohne Login. Fehler kommen als `ProblemDetail` (RFC 9457) zurück.
 
 ## Betrieb
 
 Produktion läuft auf `https://comp.boulderbot.win`: Angular hinter nginx, Backend und
 PostgreSQL daneben, veröffentlicht über einen Cloudflare-Tunnel. Nach aussen ist kein
-Port offen — der Connector wählt sich hinaus, DNS zeigt nur auf Cloudflare, TLS endet
+Port offen - der Connector wählt sich hinaus, DNS zeigt nur auf Cloudflare, TLS endet
 dort. Deployments laufen von Hand, es gibt bewusst keine CI und keinen Deploy-Key.
 
 Serveradressen, Cloudflare-Konfiguration, Release-Ablauf und der Wettkampftag-Runbook

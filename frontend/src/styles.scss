@@ -184,6 +184,13 @@ h2 {
   font-weight: normal;
 }
 
+/* A hint that stands in for a whole panel rather than annotating a field: it
+   sits alone where a table or a form would be, and reads better centred than
+   ragged against the left edge. */
+.hint.centered {
+  text-align: center;
+}
+
 .error {
   color: var(--danger);
 }
