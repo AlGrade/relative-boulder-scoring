@@ -16,6 +16,10 @@ dist/
 .angular/
 node_modules/
 
+# Betrieb: Serveradressen, Deployment-Runbook. Bewusst nicht im Repo.
+.local/
+.cloudflared-token
+
 # Lokale Overrides / Secrets
 .env
 .env.local

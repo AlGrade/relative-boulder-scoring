@@ -30,4 +30,9 @@ class ApiExceptionHandler {
 	ProblemDetail boulderNotFound(BoulderNotFoundException exception) {
 		return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
 	}
+
+	@ExceptionHandler(CompetitionClosedException.class)
+	ProblemDetail competitionClosed(CompetitionClosedException exception) {
+		return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, exception.getMessage());
+	}
 }

@@ -1,0 +1,56 @@
+# Production overrides. Active through SPRING_PROFILES_ACTIVE=prod in compose.prod.yaml.
+
+# No value means closed: the app only ever accepts registrations and ascents on purpose.
+# Set per competition day in the release env file, generously past the planned end -
+# an expired window mid-competition locks the whole field out.
+comp:
+  open-until: ${COMP_OPEN_UNTIL:}
+
+spring:
+  # There is no Docker socket in the container and no compose file beside it. Left on,
+  # startup fails trying to bring up a Postgres that Compose has already started.
+  docker:
+    compose:
+      enabled: false
+
+  # demo-data.sql seeds ten fictional climbers and their ascents. In production that is
+  # not sample data, it is a corrupted ranking.
+  sql:
+    init:
+      mode: never
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      # Fail fast rather than let a request hang while a few hundred people wait.
+      connection-timeout: 5000
+
+  jpa:
+    open-in-view: false
+    # The schema is small and settled; Hibernate creates it on first start. Once it
+    # needs to change under live data, switch to validate and add a migration tool.
+    hibernate:
+      ddl-auto: update
+
+server:
+  # Requests arrive over the Cloudflare tunnel and then nginx, so the scheme only exists
+  # in X-Forwarded-Proto. Without this Spring believes it is serving plain HTTP and
+  # leaves the Secure flag off the session and CSRF cookies.
+  forward-headers-strategy: framework
+  servlet:
+    session:
+      cookie:
+        secure: true
+        http-only: true
+        same-site: lax
+      # A competition is one afternoon; nobody needs to stay logged in for a fortnight.
+      timeout: 12h
+
+logging:
+  level:
+    root: warn
+    com.boulderscoring: info
+    org.springframework.web: info

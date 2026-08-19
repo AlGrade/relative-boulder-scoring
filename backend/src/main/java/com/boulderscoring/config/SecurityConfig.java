@@ -43,7 +43,8 @@ class SecurityConfig {
 				.permitAll()
 				// Ranking and boulder points are public - the landing page shows
 				// them without a login too.
-				.requestMatchers(HttpMethod.GET, "/api/boulders", "/api/ranking", "/api/boulder-points")
+				.requestMatchers(HttpMethod.GET, "/api/boulders", "/api/ranking", "/api/boulder-points",
+						"/api/competition")
 				.permitAll()
 				.requestMatchers("/actuator/health")
 				.permitAll()

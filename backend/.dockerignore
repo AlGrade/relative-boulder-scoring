@@ -1,0 +1,23 @@
+.git
+.gitignore
+.gitattributes
+
+target
+*.log
+
+# The wrapper is for local runs; the build image brings its own Maven.
+mvnw
+mvnw.cmd
+.mvn
+
+# Deployment input, not image content.
+Dockerfile
+.dockerignore
+compose*.yaml
+compose*.yml
+
+.env
+.env.*
+.local
+.idea
+.vscode

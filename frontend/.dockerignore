@@ -1,0 +1,25 @@
+.git
+.gitignore
+
+node_modules
+dist
+.angular
+coverage
+*.log
+
+# Dev-only: the proxy exists so `ng serve` can reach a local backend. In production
+# nginx does the proxying.
+proxy.conf.json
+
+# Deployment input, not image content. nginx.conf is deliberately NOT here - the
+# runtime stage copies it into the image.
+Dockerfile
+.dockerignore
+compose*.yaml
+compose*.yml
+
+.env
+.env.*
+.local
+.idea
+.vscode

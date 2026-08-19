@@ -1,11 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { httpResource } from '@angular/common/http';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  linkedSignal,
+  signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { errorMessage } from '../core/api';
+import { Api, errorMessage } from '../core/api';
 import { AuthService } from '../core/auth.service';
-import { GENDERS, Gender } from '../core/models';
+import { Competition, GENDERS, Gender } from '../core/models';
 import { FormField } from '../form-field/form-field';
 import { Loading } from '../loading/loading';
 import { Ranking } from '../ranking/ranking';
@@ -30,11 +38,20 @@ export class Landing {
     { id: 'login', label: 'Login' },
     { id: 'register', label: 'Registrierung' },
   ];
-  // Die meisten kommen zum ersten Mal und legen erst ein Konto an.
-  protected readonly mode = signal<Mode>('register');
+
+  /** Outside the competition nobody can register, so the page must not offer it. */
+  protected readonly competition = httpResource<Competition>(() => Api.competition, {
+    defaultValue: { open: true },
+  });
+  protected readonly open = computed(() => this.competition.value().open);
+
+  // Die meisten kommen zum ersten Mal und legen erst ein Konto an - ausser der
+  // Wettkampf ist vorbei, dann bleibt nur der Login.
+  protected readonly mode = linkedSignal<Mode>(() => (this.open() ? 'register' : 'login'));
   protected readonly error = signal('');
   protected readonly busy = signal(false);
-  protected readonly showRanking = signal(false);
+  /** Once the competition is over the final ranking is what the page is for. */
+  protected readonly showRanking = linkedSignal(() => !this.open());
   /** Messages appear once someone has tried to submit, not while they are typing. */
   private readonly submitted = signal(false);
 

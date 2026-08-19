@@ -11,6 +11,11 @@ export interface Competitor {
   gender: Gender;
 }
 
+/** Whether the competition currently accepts registrations and ascents. */
+export interface Competition {
+  open: boolean;
+}
+
 export interface Boulder {
   id: number;
   number: number;

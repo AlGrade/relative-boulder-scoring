@@ -3,7 +3,17 @@
 </header>
 
 <section class="card">
-  <app-tabs [options]="modes" [selected]="mode()" (selectedChange)="setMode($event)" label="Anmeldung" />
+  @if (open()) {
+    <app-tabs
+      [options]="modes"
+      [selected]="mode()"
+      (selectedChange)="setMode($event)"
+      label="Anmeldung"
+    />
+  } @else {
+    <!-- Nothing to register for any more; the ranking below is the point of the page. -->
+    <p class="hint">Der Wettkampf ist beendet — unten steht das Endergebnis.</p>
+  }
 
   @if (busy()) {
     <app-loading />

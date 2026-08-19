@@ -22,6 +22,17 @@ und echter Datenbank.
 
 Die gesamte Rechnung steckt in `ScoringService` — im Frontend wird nur angezeigt.
 
+## Wettkampf-Fenster
+
+`comp.open-until` ist ein Zeitpunkt, kein Schalter: bis dahin werden Registrierungen
+und Begehungen angenommen, danach nicht mehr (`403`). Lesen — Rangliste, Boulderwerte,
+Boulderliste — bleibt immer öffentlich, und einloggen kann man sich auch danach noch.
+
+Bewusst ein Ablaufdatum, weil die beiden Fehler unterschiedlich weh tun: das Fenster
+nicht zu öffnen fällt binnen einer Minute auf, es nicht zu schliessen lässt monatelang
+jeden mitregistrieren, der die URL kennt. Ohne gesetzten Wert ist zu — offen ist die
+Anwendung nur mit Absicht. Lokal steht der Wert auf einem Datum weit in der Zukunft.
+
 ## Stack
 
 | Teil       | Technologie                                        |
@@ -37,6 +48,7 @@ Die gesamte Rechnung steckt in `ScoringService` — im Frontend wird nur angezei
 ```
 relative-boulder-scoring/
 ├── compose.yaml     # PostgreSQL für lokale Entwicklung
+├── compose.prod.yaml # Produktions-Stack (nginx, Backend, Postgres, Cloudflare-Tunnel)
 ├── backend/         # Spring-Boot-API (Port 8080)
 │   └── src/main/java/com/boulderscoring/
 │       ├── controller/   REST-Endpunkte
@@ -111,6 +123,7 @@ docker compose up -d
 | POST    | `/api/auth/login`                 | –    | `{name, password}`                          |
 | POST    | `/api/auth/logout`                | ✓    | beendet die Session                         |
 | GET     | `/api/auth/me`                    | ✓    | aktueller Teilnehmer, sonst 401             |
+| GET     | `/api/competition`                | –    | `{open}` — nimmt der Wettkampf gerade Änderungen an? |
 | GET     | `/api/boulders`                   | –    | alle Boulder nach Nummer                    |
 | GET     | `/api/me/ascents`                 | ✓    | eigene Begehungen                           |
 | PUT     | `/api/me/ascents/{nummer}`        | ✓    | `{flashed}` — legt die Begehung an, setzt den Flash |
@@ -120,6 +133,16 @@ docker compose up -d
 
 Rangliste und Boulderwerte sind bewusst öffentlich — die Landing Page zeigt sie auch
 ohne Login. Fehler kommen als `ProblemDetail` (RFC 9457) zurück.
+
+## Betrieb
+
+Produktion läuft auf `https://comp.boulderbot.win`: Angular hinter nginx, Backend und
+PostgreSQL daneben, veröffentlicht über einen Cloudflare-Tunnel. Nach aussen ist kein
+Port offen — der Connector wählt sich hinaus, DNS zeigt nur auf Cloudflare, TLS endet
+dort. Deployments laufen von Hand, es gibt bewusst keine CI und keinen Deploy-Key.
+
+Serveradressen, Cloudflare-Konfiguration, Release-Ablauf und der Wettkampftag-Runbook
+liegen absichtlich ausserhalb des Repos in `.local/hetzner-deployment.md`.
 
 ## Konventionen
 

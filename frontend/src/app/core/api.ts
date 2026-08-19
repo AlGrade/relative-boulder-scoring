@@ -8,6 +8,7 @@ export const Api = {
   login: '/api/auth/login',
   logout: '/api/auth/logout',
   me: '/api/auth/me',
+  competition: '/api/competition',
   boulders: '/api/boulders',
   myAscents: '/api/me/ascents',
   ascent: (boulderNumber: number) => `/api/me/ascents/${boulderNumber}`,

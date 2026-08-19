@@ -1,0 +1,254 @@
+# Production stack. Deliberately a different filename from compose.yaml, which Spring
+# Boot's docker-compose support owns for local development.
+#
+# Always run it with an explicit project name so containers are replaced rather than
+# accumulated, and never with `down -v` - that deletes the competition.
+#
+#   docker compose --env-file comp-<REV>.env --profile public \
+#     -p comp-production -f compose.prod.yaml up -d --no-build --wait --remove-orphans
+#
+# The eight limit variables below carry two profiles: generous while a competition runs,
+# small for the rest of the year. Switching is an edit to the env file plus `up -d`;
+# Compose recreates only what changed.
+
+name: relative-boulder-scoring
+
+services:
+  web:
+    image: comp-web:${COMP_IMAGE_TAG:-canary}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: static
+    # Loopback only. Nothing outside the host can reach this; the public edge arrives
+    # through the connector below, which dials out rather than listening.
+    ports:
+      - 127.0.0.1:${COMP_PORT:-18090}:8080
+    depends_on:
+      backend:
+        condition: service_healthy
+        restart: true
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777,nosuid,nodev,noexec
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    cpus: ${WEB_CPUS:-0.25}
+    mem_limit: ${WEB_MEM:-96m}
+    mem_reservation: 16m
+    memswap_limit: ${WEB_MEM:-96m}
+    oom_score_adj: 500
+    shm_size: 8m
+    ulimits:
+      nofile:
+        soft: 2048
+        hard: 2048
+    networks:
+      - edge
+      - app
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  backend:
+    image: comp-backend:${COMP_IMAGE_TAG:-canary}
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: runtime
+    # No ports: reachable only from nginx over the app network.
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      COMP_OPEN_UNTIL: ${COMP_OPEN_UNTIL:-}
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-comp}
+      DB_USER: ${POSTGRES_USER:-comp}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+    depends_on:
+      db:
+        condition: service_healthy
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    read_only: true
+    # The JVM writes hsperfdata here, and it is the only path it needs to write at all.
+    tmpfs:
+      - /tmp:size=64m,mode=1777,nosuid,nodev,noexec
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 512
+    # Give this at least 2 during a competition: at a quota of one core the JVM picks
+    # the serial collector and single-threaded defaults on its own.
+    cpus: ${BACKEND_CPUS:-1.0}
+    mem_limit: ${BACKEND_MEM:-640m}
+    mem_reservation: 256m
+    memswap_limit: ${BACKEND_MEM:-640m}
+    oom_score_adj: 400
+    ulimits:
+      nofile:
+        soft: 4096
+        hard: 4096
+    networks:
+      - app
+      - data
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  db:
+    image: postgres:18
+    # NEVER add `ports:` here. Docker's iptables rules run ahead of ufw's chain, so a
+    # published port is reachable from the internet however ufw is configured.
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-comp}
+      POSTGRES_USER: ${POSTGRES_USER:-comp}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+      # Only read at first initdb; changing it later does nothing.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale-provider=libc --locale=en_US.UTF-8"
+    command:
+      - postgres
+      - -c
+      - shared_buffers=${PG_SHARED_BUFFERS:-64MB}
+      - -c
+      - work_mem=4MB
+      # Room for Hikari's 20 alongside a psql session and the backup job.
+      - -c
+      - max_connections=30
+      - -c
+      - log_min_duration_statement=1000
+    volumes:
+      # postgres:18 puts PGDATA under /var/lib/postgresql/18/docker and declares its
+      # VOLUME at /var/lib/postgresql. Mounting the pre-18 .../data path here would
+      # leave the real data in the container's writable layer, lost on the next
+      # recreate - and every mode switch recreates containers.
+      - pgdata:/var/lib/postgresql
+    shm_size: 128mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 60s
+    # Not read_only: Postgres writes to several paths outside its data directory and
+    # fights the arrangement for no real gain here.
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    cpus: ${DB_CPUS:-0.5}
+    mem_limit: ${DB_MEM:-256m}
+    mem_reservation: 128m
+    memswap_limit: ${DB_MEM:-256m}
+    oom_score_adj: 200
+    ulimits:
+      nofile:
+        soft: 2048
+        hard: 2048
+    networks:
+      - data
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  # Left out unless the public profile is selected, so the stack can be smoke-tested on
+  # loopback before anything is exposed. Adds no host port and joins no network owned by
+  # another application on this host.
+  cloudflared:
+    profiles:
+      - public
+    # Same digest boulderbot.win pins, so the image is already on the host.
+    image: cloudflare/cloudflared:2026.7.2@sha256:4f6655284ab3d252b7f28fedb19fe6c8fc82ee5b1295c20ac74d475e5398a52d
+    command:
+      - tunnel
+      - --no-autoupdate
+      - --loglevel
+      - info
+      - --metrics
+      - 127.0.0.1:20241
+      - --grace-period
+      - 30s
+      - run
+      - --token-file
+      - /run/secrets/cloudflared-token
+    depends_on:
+      web:
+        condition: service_healthy
+        restart: true
+    healthcheck:
+      test: ["CMD", "cloudflared", "tunnel", "--metrics", "127.0.0.1:20241", "ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    # A file mount rather than an environment variable: the token would otherwise show
+    # up in `docker inspect` and in process listings.
+    secrets:
+      - source: cloudflared_token
+        target: cloudflared-token
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 40s
+    read_only: true
+    tmpfs:
+      - /tmp:size=8m,mode=1777,nosuid,nodev,noexec
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    cpus: ${CFD_CPUS:-0.2}
+    mem_limit: ${CFD_MEM:-128m}
+    mem_reservation: 16m
+    memswap_limit: ${CFD_MEM:-128m}
+    oom_score_adj: 500
+    ulimits:
+      nofile:
+        soft: 2048
+        hard: 2048
+    networks:
+      - edge
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "2"
+
+networks:
+  # The only network with a route out, and only the connector and nginx are on it.
+  edge:
+    driver: bridge
+  # Internal: the backend can be reached by nginx and can reach the database, and has
+  # no path to the internet in either direction. Worth knowing when something inside
+  # the backend unexpectedly cannot resolve an external host - that is by design.
+  app:
+    driver: bridge
+    internal: true
+  data:
+    driver: bridge
+    internal: true
+
+volumes:
+  # The competition lives here. `docker compose down` leaves it alone; `down -v` does
+  # not, which is why that flag must never be typed against this project.
+  pgdata:
+
+secrets:
+  cloudflared_token:
+    file: ${CLOUDFLARED_TOKEN_FILE:-.cloudflared-token}
