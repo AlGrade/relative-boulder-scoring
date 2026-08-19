@@ -1,0 +1,22 @@
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { Gender } from './models';
+
+/** Alle Endpunkte an einer Stelle — die Pfade sind relativ, damit der Dev-Proxy greift. */
+export const Api = {
+  register: '/api/auth/register',
+  login: '/api/auth/login',
+  logout: '/api/auth/logout',
+  me: '/api/auth/me',
+  boulders: '/api/boulders',
+  myAscents: '/api/me/ascents',
+  ascent: (boulderNumber: number) => `/api/me/ascents/${boulderNumber}`,
+  ranking: (gender: Gender) => `/api/ranking?gender=${gender}`,
+  boulderPoints: (gender: Gender) => `/api/boulder-points?gender=${gender}`,
+} as const;
+
+/** Holt den Klartext aus dem ProblemDetail des Backends, sonst den Fallback. */
+export function errorMessage(error: unknown, fallback: string): string {
+  const detail = error instanceof HttpErrorResponse ? error.error?.detail : null;
+  return typeof detail === 'string' && detail.length > 0 ? detail : fallback;
+}

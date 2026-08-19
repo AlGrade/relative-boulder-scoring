@@ -1,0 +1,32 @@
+<header class="greeting">
+  <h1>Hallo, {{ firstName() }}!</h1>
+  <button type="button" class="link" (click)="logout()">Ausloggen</button>
+</header>
+
+<nav class="tabs" role="tablist">
+  @for (entry of tabs; track entry.id) {
+    <button
+      type="button"
+      role="tab"
+      [class.active]="tab() === entry.id"
+      [attr.aria-selected]="tab() === entry.id"
+      (click)="tab.set(entry.id)"
+    >
+      {{ entry.label }}
+    </button>
+  }
+</nav>
+
+<section class="card">
+  @switch (tab()) {
+    @case ('boulders') {
+      <app-boulder-list />
+    }
+    @case ('ranking') {
+      <app-ranking />
+    }
+    @case ('points') {
+      <app-boulder-points />
+    }
+  }
+</section>

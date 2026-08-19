@@ -1,0 +1,43 @@
+.boulders {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    grid-template-columns: 3rem 1fr 1fr;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+  }
+}
+
+.number {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.toggle {
+  padding: 0.7rem 0.5rem;
+  color: var(--text-muted);
+  background: var(--surface-raised);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font: inherit;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: progress;
+  }
+
+  &.sent.on {
+    color: var(--accent-text);
+    background: var(--sent);
+  }
+
+  &.flash.on {
+    color: #1a1c1f;
+    background: var(--flash);
+  }
+}

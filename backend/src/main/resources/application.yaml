@@ -21,6 +21,11 @@ spring:
       hibernate:
         jdbc.time_zone: UTC
 
+  mvc:
+    problemdetails:
+      # Fehler kommen als RFC-9457-Body zurueck, auch Bean-Validation-Verstoesse.
+      enabled: true
+
   threads:
     virtual:
       enabled: true

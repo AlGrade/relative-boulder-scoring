@@ -1,0 +1,20 @@
+<app-gender-tabs [(gender)]="gender" />
+
+<p class="hint">Ein Boulder ist umso mehr wert, je weniger Leute ihn geschafft haben.</p>
+
+@if (points.isLoading()) {
+  <p class="hint">Laden…</p>
+} @else if (points.error()) {
+  <p class="hint error">Boulderwerte konnten nicht geladen werden.</p>
+} @else if (points.value().length === 0) {
+  <p class="hint">Es sind noch keine Boulder eingetragen.</p>
+} @else {
+  <ul class="points">
+    @for (entry of points.value(); track entry.boulderNumber) {
+      <li>
+        <span class="boulder">Boulder {{ entry.boulderNumber }}</span>
+        <span class="value">{{ entry.points.toFixed(2) }}</span>
+      </li>
+    }
+  </ul>
+}

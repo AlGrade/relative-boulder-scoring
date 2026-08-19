@@ -1,0 +1,33 @@
+@if (boulders.isLoading()) {
+  <p class="hint">Laden…</p>
+} @else if (boulders.value().length === 0) {
+  <p class="hint">Es sind noch keine Boulder eingetragen.</p>
+} @else {
+  <ul class="boulders">
+    @for (boulder of boulders.value(); track boulder.id) {
+      <li>
+        <span class="number">B{{ boulder.number }}</span>
+        <button
+          type="button"
+          class="toggle sent"
+          [class.on]="isSent(boulder.number)"
+          [disabled]="pending()"
+          [attr.aria-pressed]="isSent(boulder.number)"
+          (click)="toggleSent(boulder.number)"
+        >
+          ✓ Geschafft
+        </button>
+        <button
+          type="button"
+          class="toggle flash"
+          [class.on]="isFlashed(boulder.number)"
+          [disabled]="pending()"
+          [attr.aria-pressed]="isFlashed(boulder.number)"
+          (click)="toggleFlashed(boulder.number)"
+        >
+          ⚡ Flash
+        </button>
+      </li>
+    }
+  </ul>
+}

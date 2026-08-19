@@ -1,0 +1,19 @@
+<app-gender-tabs [(gender)]="gender" />
+
+@if (entries.isLoading()) {
+  <p class="hint">Laden…</p>
+} @else if (entries.error()) {
+  <p class="hint error">Rangliste konnte nicht geladen werden.</p>
+} @else if (entries.value().length === 0) {
+  <p class="hint">Noch niemand in dieser Wertung.</p>
+} @else {
+  <ol class="ranking">
+    @for (entry of entries.value(); track entry.name) {
+      <li>
+        <span class="rank">{{ entry.rank }}</span>
+        <span class="name">{{ entry.name }}</span>
+        <span class="points">{{ entry.points.toFixed(2) }}</span>
+      </li>
+    }
+  </ol>
+}
