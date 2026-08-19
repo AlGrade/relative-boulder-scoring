@@ -70,8 +70,15 @@ Spring Boots Docker-Compose-Support fährt `compose.yaml` beim Start hoch und
 verdrahtet die Datasource selbst — es müssen keine DB-Zugangsdaten gesetzt werden.
 Der Container läuft nach dem Beenden der App weiter (`lifecycle-management: start_only`).
 
-**Boulder anlegen.** Die Anwendung liest Boulder nur; angelegt werden sie direkt in der
-Datenbank, nachdem das Backend einmal lief (Hibernate legt die Tabellen an):
+Beim Start läuft `backend/src/main/resources/demo-data.sql` mit und legt eine
+Beispiel-Runde an: 15 Boulder, 10 Teilnehmer und deren Begehungen. Damit zeigen
+Rangliste und Boulderwerte sofort etwas Sinnvolles. Anmelden kann man sich mit jedem
+der Namen aus dem Skript (z. B. `Chris Maier`) und dem Passwort `geheim123`.
+
+Das Skript ist idempotent (`ON CONFLICT DO NOTHING`) und läuft bei jedem Start mit,
+ohne vorhandene Daten anzufassen. Für einen echten Wettkampf in `application.yaml`
+`spring.sql.init.mode` auf `never` stellen und die Boulder direkt anlegen — die
+Anwendung liest sie nur, einen Endpunkt dafür gibt es bewusst nicht:
 
 ```bash
 docker exec -i rbs-postgres psql -U boulderscoring -d boulderscoring \

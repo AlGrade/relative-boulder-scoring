@@ -12,6 +12,8 @@ spring:
 
   jpa:
     open-in-view: false
+    # Damit demo-data.sql erst laeuft, wenn Hibernate die Tabellen angelegt hat.
+    defer-datasource-initialization: true
     hibernate:
       # Dev-Setup: Hibernate zieht das Schema aus den Entities nach.
       # Sobald das Datenmodell steht, auf validate umstellen und
@@ -20,6 +22,14 @@ spring:
     properties:
       hibernate:
         jdbc.time_zone: UTC
+
+  # Beispiel-Runde fuer die lokale Entwicklung (siehe demo-data.sql). Das Skript ist
+  # idempotent und laeuft bei jedem Start mit; fuer einen echten Wettkampf hier auf
+  # never stellen.
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:demo-data.sql
 
   mvc:
     problemdetails:
