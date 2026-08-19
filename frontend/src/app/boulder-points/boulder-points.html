@@ -9,12 +9,18 @@
 } @else if (points.value().length === 0) {
   <p class="hint">Es sind noch keine Boulder eingetragen.</p>
 } @else {
-  <ul class="points">
-    @for (entry of points.value(); track entry.boulderNumber) {
-      <li>
-        <span class="boulder">Boulder {{ entry.boulderNumber }}</span>
-        <span class="value">{{ entry.points.toFixed(2) }}</span>
-      </li>
-    }
-  </ul>
+  <div class="table">
+    <div class="table-head">
+      <span class="boulder">Boulder</span>
+      <span class="value">Punkte</span>
+    </div>
+    <ul class="points">
+      @for (entry of points.value(); track entry.boulderNumber) {
+        <li>
+          <span class="boulder">Boulder {{ entry.boulderNumber }}</span>
+          <span class="value">{{ entry.points.toFixed(2) }}</span>
+        </li>
+      }
+    </ul>
+  </div>
 }

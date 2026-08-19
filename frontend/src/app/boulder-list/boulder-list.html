@@ -3,6 +3,11 @@
 } @else if (boulders.value().length === 0) {
   <p class="hint">Es sind noch keine Boulder eingetragen.</p>
 } @else {
+  <div class="boulder-head">
+    <span>Boulder</span>
+    <span>Geschafft</span>
+    <span>Geflasht</span>
+  </div>
   <ul class="boulders">
     @for (boulder of boulders.value(); track boulder.id) {
       <li>

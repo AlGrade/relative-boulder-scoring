@@ -1,38 +1,68 @@
+/* Same grid as the rows, so the labels sit above their columns. */
+.boulder-head,
+.boulders li {
+  display: grid;
+  grid-template-columns: 3rem 1fr 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.boulder-head {
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-align: center;
+
+  span:first-child {
+    text-align: left;
+  }
+}
+
 .boulders {
   margin: 0;
   padding: 0;
   list-style: none;
 
   li {
-    display: grid;
-    grid-template-columns: 3rem 1fr 1fr;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  li:last-child {
+    border-bottom: none;
   }
 }
 
 .number {
-  font-weight: 600;
+  color: var(--accent);
+  font-weight: bold;
   font-variant-numeric: tabular-nums;
 }
 
 .toggle {
-  padding: 0.7rem 0.5rem;
-  color: var(--text-muted);
-  background: var(--surface-raised);
-  border: 1px solid transparent;
-  border-radius: var(--radius);
+  padding: 0.6rem 0.5rem;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: none;
+  border-radius: var(--radius-pill);
   font: inherit;
+  font-size: 0.9rem;
+  font-weight: bold;
   cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 
   &.sent.on {
-    color: var(--accent-text);
+    color: var(--on-accent);
     background: var(--sent);
   }
 
   &.flash.on {
-    color: #1a1c1f;
+    color: var(--on-flash);
     background: var(--flash);
   }
 }

@@ -7,6 +7,12 @@
 
   h1 {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.75rem;
   }
+}
+
+/* The violet rule under the greeting comes from the previous project. */
+.separator {
+  margin-bottom: 1.5rem;
+  border-top: 2px solid var(--accent);
 }

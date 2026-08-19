@@ -7,13 +7,20 @@
 } @else if (entries.value().length === 0) {
   <p class="hint">Noch niemand in dieser Wertung.</p>
 } @else {
-  <ol class="ranking">
-    @for (entry of entries.value(); track entry.name) {
-      <li>
-        <span class="rank">{{ entry.rank }}</span>
-        <span class="name">{{ entry.name }}</span>
-        <span class="points">{{ entry.points.toFixed(2) }}</span>
-      </li>
-    }
-  </ol>
+  <div class="table">
+    <div class="table-head">
+      <span class="rank">Rang</span>
+      <span class="name">Name</span>
+      <span class="points">Punkte</span>
+    </div>
+    <ol class="ranking">
+      @for (entry of entries.value(); track entry.name) {
+        <li>
+          <span class="rank">{{ entry.rank }}</span>
+          <span class="name">{{ entry.name }}</span>
+          <span class="points">{{ entry.points.toFixed(2) }}</span>
+        </li>
+      }
+    </ol>
+  </div>
 }

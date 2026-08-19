@@ -1,22 +1,17 @@
-.points {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--gap);
-    padding: 0.6rem 0.75rem;
-    border-bottom: 1px solid var(--border);
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
+.table-head,
+.points li {
+  display: grid;
+  grid-template-columns: 1fr 5rem;
+  gap: var(--gap);
 }
 
 .value {
+  color: var(--sent);
+  font-weight: bold;
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
+  text-align: right;
+}
+
+.table-head .value {
+  color: var(--on-accent);
 }

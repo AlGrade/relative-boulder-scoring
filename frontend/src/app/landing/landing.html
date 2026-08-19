@@ -107,7 +107,7 @@
 <section class="card">
   <button type="button" class="disclosure" (click)="showRanking.set(!showRanking())">
     Ranking
-    <span aria-hidden="true">{{ showRanking() ? '▲' : '▼' }}</span>
+    <span class="arrow" [class.open]="showRanking()" aria-hidden="true">▼</span>
   </button>
   @if (showRanking()) {
     <app-ranking />

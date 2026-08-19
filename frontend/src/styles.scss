@@ -1,18 +1,31 @@
+/* Palette and shapes taken over from the predecessor project (boulderauswertung).
+   Light only - there is no dark mode. */
 :root {
-  color-scheme: light dark;
+  --violet: #854c99;
+  --violet-dark: #6a3d7a;
+  --violet-tint: #f0e6f5;
+  --violet-tint-soft: #f9f4fc;
 
-  --surface: light-dark(#ffffff, #17181c);
-  --surface-raised: light-dark(#f1f2f5, #212329);
-  --border: light-dark(#dcdfe4, #33363d);
-  --text: light-dark(#1a1c1f, #e9eaec);
-  --text-muted: light-dark(#61666e, #9aa0a8);
-  --accent: light-dark(#1f6feb, #4c92f5);
+  /* Semantic tokens. Components use only these, never the raw colours above. */
+  --accent: var(--violet);
+  --accent-hover: var(--violet-dark);
+  --accent-soft: var(--violet-tint);
+  --accent-zebra: var(--violet-tint-soft);
   --on-accent: #ffffff;
-  --sent: light-dark(#1f8f52, #2f9e63);
-  --flash: light-dark(#e0a300, #f0b429);
-  --danger: light-dark(#c0392b, #f07167);
 
-  --radius: 10px;
+  --surface: #ffffff;
+  --border: #e0e0e0;
+  --text: #1f1f1f;
+  --text-muted: #6b6b6b;
+
+  --sent: #4caf50;
+  --flash: #ffd700;
+  --on-flash: #1f1f1f;
+  --danger: #ff4136;
+
+  --radius-pill: 50px;
+  --radius-card: 8px;
+  --shadow-card: 0 0 10px rgb(0 0 0 / 10%);
   --gap: 0.75rem;
 }
 
@@ -23,51 +36,93 @@
 body {
   margin: 0;
   color: var(--text);
-  background: var(--surface-raised);
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
+  background: var(--surface);
+  font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;
+}
+
+h1,
+h2 {
+  color: var(--accent);
+  font-weight: bold;
 }
 
 /* Shared pieces used by several components. Anything specific lives with the
    component itself. */
 
 .card {
-  padding: 1rem;
-  margin-bottom: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }
 
 .tabs {
   display: flex;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  margin-bottom: 1rem;
-  background: var(--surface-raised);
-  border-radius: var(--radius);
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 
   button {
-    flex: 1;
-    padding: 0.55rem;
-    color: var(--text-muted);
+    padding: 0.5rem 1.25rem;
+    color: var(--accent);
     background: none;
     border: none;
-    border-radius: calc(var(--radius) - 4px);
+    border-radius: var(--radius-pill);
     font: inherit;
+    font-weight: bold;
     cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   button.active {
-    color: var(--text);
-    background: var(--surface);
-    font-weight: 600;
+    color: var(--on-accent);
+    background: var(--accent);
   }
+}
+
+/* Ranking and boulder points share the violet header bar and the zebra rows.
+   Only the column layout differs, so each component sets its own grid. */
+.table {
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.table-head,
+.table li {
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+}
+
+.table-head {
+  color: var(--on-accent);
+  background: var(--accent);
+  font-weight: bold;
+}
+
+.table ol,
+.table ul {
+  margin: 0;
+  padding: 0;
+  background: var(--surface);
+  list-style: none;
+}
+
+.table li {
+  border-bottom: 1px solid var(--border);
+}
+
+.table li:nth-child(even) {
+  background: var(--accent-zebra);
+}
+
+.table li:last-child {
+  border-bottom: none;
 }
 
 /* The one loading indicator. Deliberately global and not scoped to the Loading
@@ -89,7 +144,7 @@ body {
 .loading-circle {
   width: 2.25rem;
   height: 2.25rem;
-  border: 3px solid var(--border);
+  border: 3px solid var(--accent-soft);
   border-top-color: var(--accent);
   border-radius: 50%;
   animation: loading-spin 0.8s linear infinite;
@@ -97,7 +152,7 @@ body {
 
 .loading-label {
   margin: 0;
-  color: var(--text-muted);
+  color: var(--accent);
   font-size: 0.9rem;
 }
 
@@ -126,7 +181,7 @@ body {
   color: var(--text-muted);
   font-size: 0.9rem;
   /* Inside a label it would otherwise inherit the bold label weight. */
-  font-weight: 400;
+  font-weight: normal;
 }
 
 .error {
@@ -136,26 +191,46 @@ body {
 form {
   display: flex;
   flex-direction: column;
-  gap: var(--gap);
+  gap: 1.25rem;
 }
 
 label {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.4rem;
+  color: var(--accent);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 input,
 select {
-  padding: 0.65rem;
-  color: inherit;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  color: var(--text);
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-pill);
   font: inherit;
-  font-weight: 400;
+  font-weight: normal;
+}
+
+/* Native select arrows ignore the border colour, so it is drawn as a violet chevron. */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23854c99' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+input[aria-invalid='true'],
+select[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+input::placeholder {
+  color: var(--text-muted);
 }
 
 /* A tap must not leave anything behind: no grey overlay, no selected label text,
@@ -173,27 +248,28 @@ button:focus {
   outline: none;
 }
 
-input[aria-invalid='true'],
-select[aria-invalid='true'] {
-  border-color: var(--danger);
-}
-
 input:focus-visible,
 select:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-hover);
   outline-offset: 2px;
 }
 
 button.primary {
-  padding: 0.7rem;
+  padding: 0.75rem 1.5rem;
   color: var(--on-accent);
   background: var(--accent);
   border: none;
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   font: inherit;
-  font-weight: 600;
+  font-weight: bold;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--accent-hover);
+  }
 
   &:disabled {
     opacity: 0.6;
@@ -207,5 +283,11 @@ button.link {
   background: none;
   border: none;
   font: inherit;
+  font-weight: bold;
+  text-decoration: underline;
   cursor: pointer;
+
+  &:hover {
+    color: var(--accent-hover);
+  }
 }

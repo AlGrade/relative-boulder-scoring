@@ -1,28 +1,25 @@
-.ranking {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    display: grid;
-    grid-template-columns: 2.5rem 1fr auto;
-    align-items: center;
-    gap: var(--gap);
-    padding: 0.6rem 0.75rem;
-    border-bottom: 1px solid var(--border);
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
+/* The head cells carry the same classes as the row cells, so both line up. */
+.table-head,
+.ranking li {
+  display: grid;
+  grid-template-columns: 3rem 1fr 5rem;
+  gap: var(--gap);
 }
 
 .rank {
-  color: var(--text-muted);
+  color: var(--accent);
+  font-weight: bold;
   font-variant-numeric: tabular-nums;
 }
 
 .points {
+  color: var(--sent);
+  font-weight: bold;
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
+  text-align: right;
+}
+
+.table-head .rank,
+.table-head .points {
+  color: var(--on-accent);
 }
