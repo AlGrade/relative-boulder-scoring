@@ -3,10 +3,8 @@
 } @else if (boulders.value().length === 0) {
   <p class="hint">Es sind noch keine Boulder eingetragen.</p>
 } @else {
-  @if (failed()) {
-    <p class="hint error" role="alert">
-      Die letzte Änderung wurde nicht gespeichert. Bitte noch einmal tippen.
-    </p>
+  @if (failure()) {
+    <p class="hint error centered save-failed" role="alert">{{ failure() }}</p>
   }
   <div class="boulder-head">
     <span>Boulder</span>

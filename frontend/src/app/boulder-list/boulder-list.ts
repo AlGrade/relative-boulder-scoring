@@ -1,4 +1,4 @@
-import { HttpClient, httpResource } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, httpResource } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,7 +37,7 @@ export class BoulderList {
 
   private readonly inFlight = signal(0);
   /** A failed save is the one error a competitor must not miss in the gym. */
-  protected readonly failed = signal(false);
+  protected readonly failure = signal('');
 
   private readonly byNumber = computed(
     () => new Map(this.ascents().map((ascent) => [ascent.boulderNumber, ascent])),
@@ -82,7 +82,7 @@ export class BoulderList {
    * late answer cannot overwrite a tap that is still on its way.
    */
   private send(request: Observable<void>): void {
-    this.failed.set(false);
+    this.failure.set('');
     this.inFlight.update((count) => count + 1);
     request
       .pipe(
@@ -94,6 +94,16 @@ export class BoulderList {
         }),
       )
       // The reload above puts the real state back; this only says why it jumped.
-      .subscribe({ error: () => this.failed.set(true) });
+      // A 403 can only mean the window has closed, and saying so is worth more
+      // than "try again" - trying again will not help. Anything else really is
+      // worth another tap, so it must not claim the competition is over.
+      .subscribe({
+        error: (cause: unknown) =>
+          this.failure.set(
+            cause instanceof HttpErrorResponse && cause.status === 403
+              ? 'Der Wettkampf ist schon vorbei, logging nicht mehr möglich.'
+              : 'Die letzte Änderung wurde nicht gespeichert. Bitte noch einmal tippen.',
+          ),
+      });
   }
 }

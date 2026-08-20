@@ -1,3 +1,9 @@
+/* Sits above the header row, so it needs air beneath it rather than crowding
+   the list it is warning about. */
+.save-failed {
+  margin-bottom: 1.5rem;
+}
+
 /* Three equal columns, same grid for the head, so the labels sit above their
    buttons. No frame around the list - the violet rule is the only divider. */
 .boulder-head,
