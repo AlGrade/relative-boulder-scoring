@@ -46,8 +46,10 @@ server:
         secure: true
         http-only: true
         same-site: lax
-      # Idle timeout, reset by every request. Long enough that nobody is thrown out
-      # mid-competition, or between the practice round and the real one the next day.
+        # Survives a browser or phone restart; without it the cookie dies with the
+        # browser. Absolute from login, so this is what really ends a session.
+        max-age: 72h
+      # Idle time, reset by every tap.
       timeout: 72h
 
 logging:
