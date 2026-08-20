@@ -10,9 +10,13 @@ ranking moves as they do.
 
 The interface is German; the code and its comments are English.
 
-| Sign up | Log ascents | Ranking | Boulder values |
-| --- | --- | --- | --- |
-| ![Registration form](docs/screenshots/registration.png) | ![Logging ascents and flashes](docs/screenshots/logging.png) | ![Ranking per scoring class](docs/screenshots/ranking.png) | ![What each boulder is currently worth](docs/screenshots/boulder-points.png) |
+| Sign up | Log ascents |
+| :---: | :---: |
+| <img src="docs/screenshots/registration.png" alt="Registration form" width="380"> | <img src="docs/screenshots/logging.png" alt="Logging ascents and flashes" width="380"> |
+
+| Ranking | Boulder values |
+| :---: | :---: |
+| <img src="docs/screenshots/ranking.png" alt="Ranking per scoring class" width="380"> | <img src="docs/screenshots/boulder-points.png" alt="What each boulder is currently worth" width="380"> |
 
 ## Scoring
 
@@ -126,9 +130,6 @@ backend and PostgreSQL beside it, published through a Cloudflare tunnel. No port
 open to the outside - the connector dials out, DNS points only at Cloudflare, and TLS
 terminates there. Deployments are manual; there is deliberately no CI and no deploy
 key.
-
-Server addresses, the Cloudflare configuration, the release procedure and the
-competition-day runbook deliberately live outside this repository, in `.local/`.
 
 ## License
 
