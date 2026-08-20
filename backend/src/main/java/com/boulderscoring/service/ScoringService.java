@@ -101,7 +101,10 @@ public class ScoringService {
 		return ascentCount == 0 ? POINTS_PER_BOULDER : POINTS_PER_BOULDER / ascentCount;
 	}
 
-	/** Equal points mean equal rank; the next rank skips accordingly. */
+	/**
+	 * Equal points mean equal rank; the next rank skips accordingly. Compares the
+	 * rounded totals - see {@link #round} for why that comparison is exact.
+	 */
 	private static List<RankingEntry> withRanks(List<RankingEntry> sortedByPoints) {
 		List<RankingEntry> ranked = new ArrayList<>(sortedByPoints.size());
 		double previousPoints = Double.NaN;
@@ -118,8 +121,21 @@ public class ScoringService {
 		return ranked;
 	}
 
+	/**
+	 * One decimal, and deliberately applied before anything compares two totals.
+	 *
+	 * <p>Summing the same boulders in a different order does not give the same double:
+	 * the values are mostly repeating decimals, so two people who climbed exactly the
+	 * same problems can end up roughly 1e-12 apart and miss a tie they have earned.
+	 * Rounding first makes that difference disappear.
+	 *
+	 * <p>Going through {@link Math#round} is what makes the equality check in
+	 * {@link #withRanks} sound: two totals that round to the same tenth are divided
+	 * from the same long by the same divisor, so they come out bit-identical rather
+	 * than merely close.
+	 */
 	private static double round(double points) {
-		return Math.round(points * 100d) / 100d;
+		return Math.round(points * 10d) / 10d;
 	}
 
 	private record Snapshot(List<Ascent> ascents, Map<Integer, Double> pointsByBoulder) {

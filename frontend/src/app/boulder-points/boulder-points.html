@@ -18,7 +18,7 @@
       @for (entry of points.value(); track entry.boulderNumber) {
         <li>
           <span class="boulder">Boulder {{ entry.boulderNumber }}</span>
-          <span class="value">{{ entry.points.toFixed(2) }}</span>
+          <span class="value">{{ entry.points.toFixed(1) }}</span>
         </li>
       }
     </ul>
