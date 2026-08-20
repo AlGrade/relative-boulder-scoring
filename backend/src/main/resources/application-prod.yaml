@@ -46,8 +46,9 @@ server:
         secure: true
         http-only: true
         same-site: lax
-      # A competition is one afternoon; nobody needs to stay logged in for a fortnight.
-      timeout: 12h
+      # Idle timeout, reset by every request. Long enough that nobody is thrown out
+      # mid-competition, or between the practice round and the real one the next day.
+      timeout: 72h
 
 logging:
   level:
