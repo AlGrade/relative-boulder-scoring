@@ -173,7 +173,7 @@ services:
   cloudflared:
     profiles:
       - public
-    # Same digest boulderbot.win pins, so the image is already on the host.
+    # Pinned by digest, not only by tag: a tag can be moved to a different image.
     image: cloudflare/cloudflared:2026.7.2@sha256:4f6655284ab3d252b7f28fedb19fe6c8fc82ee5b1295c20ac74d475e5398a52d
     command:
       - tunnel

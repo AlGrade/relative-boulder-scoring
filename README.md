@@ -6,6 +6,11 @@ umso mehr wert, je weniger Teilnehmer ihn geschafft haben.
 Nachfolger von `boulderauswertung` (Angular + Airtable) - diesmal mit echtem Backend
 und echter Datenbank.
 
+Die Oberfläche ist durchgehend deutsch, Code und Kommentare sind englisch. Wer das
+Projekt übernimmt und eine andere Sprache braucht, findet die Texte in den Angular-
+Templates und in `ProblemDetail`-Meldungen im Backend - eine i18n-Bibliothek gibt es
+bewusst nicht.
+
 ## Wertung
 
 - Ein Boulder ist `1000 / Anzahl Begehungen` wert, `1000` wenn ihn noch niemand
@@ -143,6 +148,10 @@ dort. Deployments laufen von Hand, es gibt bewusst keine CI und keinen Deploy-Ke
 
 Serveradressen, Cloudflare-Konfiguration, Release-Ablauf und der Wettkampftag-Runbook
 liegen absichtlich ausserhalb des Repos in `.local/hetzner-deployment.md`.
+
+## Lizenz
+
+MIT, siehe [LICENSE](LICENSE).
 
 ## Konventionen
 
