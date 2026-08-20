@@ -1,5 +1,9 @@
 # Relative Boulder Scoring
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+**Live:** [comp.boulderbot.win](https://comp.boulderbot.win)
+
 Wettkampf-Auswertung für Boulder-Sessions mit relativem Punktesystem: Ein Boulder ist
 umso mehr wert, je weniger Teilnehmer ihn geschafft haben.
 
